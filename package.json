@@ -1,0 +1,13 @@
+{
+  "name": "dank-memes",
+  "version": "1.0.0",
+  "description": "Send Andrew dank memes.",
+  "main": "server.js",
+  "author": "Tillson Galloway",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.60.0",
+    "twilio": "^2.2.1",
+    "twit": "^2.1.0"
+  }
+}
