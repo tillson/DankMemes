@@ -1,6 +1,6 @@
 # dank-memes
 Send [@ndrewh](https://github.com/ndrewh) dank memes whenever he favorites one of my tweets, as he seems to do too much.
-
+@ndrewh
 ## Installation
 1. Clone the repo
 2. run npm install
