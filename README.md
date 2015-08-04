@@ -24,7 +24,7 @@ Do your changes and submit a pull request.  I will most likely merge it.
 
 
 ## Info
-[Browse dank memes](http://reddit.com/r/dankmemes)
+[Browse dank memes](http://reddit.com/r/dankmemes)  
 [My Website](http://tillsongalloway.com)  
 [Follow me on Twitter](http://twitter.com/tillson_)  
 [Follow Andrew on Twitter](http://twitter.com/_ndrewh)
