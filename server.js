@@ -1,14 +1,21 @@
-var Twit = require('twit');
-var request = require("request");
-var twilio = require('twilio')('TWILIO API', 'TWILIO SECRET');
+var Twit = require('twit'),
+request = require("request"),
+nconf = require("nconf"),
+twilio = require('twilio');
+
+nconf.argv()
+  .env()
+  .file({ file: "config.json" });
 
 var alreadySent = [];
 
+var Twilio = twilio(nconf.get("twilio-account"), nconf.get("twilio-secret"));
+
 var client = new Twit({
-  consumer_key: "TWITTER CONSUMER",
-  consumer_secret: "TWITTER CONSUMER SECRET",
-  access_token: "TWITTER ACCESS TOKEN",
-  access_token_secret: "TWITTER ACCESS TOKEN SECRET"
+  consumer_key: nconf.get("twitter-consumer"),
+  consumer_secret: nconf.get("twitter-consumerSecret"),
+  access_token: nconf.get("twitter-access"),
+  access_token_secret: nconf.get("twitter-accessSecret")
 });
 
 var stream = client.stream('user');
@@ -31,7 +38,7 @@ function sendDankMeme() {
 }
 
 function getDankMeme(callback) {
-  request('http://www.reddit.com/r/dankmemes.json', function (error, response, body) {
+  request("http://www.reddit.com/r/dankmemes.json", function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var json = JSON.parse(body);
       var posts = json.data.children;
@@ -48,9 +55,9 @@ function getDankMeme(callback) {
 }
 
 function sendTwilioMessage(picture) {
-  twilio.sendMessage({
-    to: "recipient number",
-    from: 'twilio number',
+  Twilio.sendMessage({
+    to: nconf.get("receiving-phone"),
+    from: nconf.get("sending-phone"),
     NumMedia: 1,
     MediaUrl: picture
   }, function(err, responseData) {
@@ -60,3 +67,6 @@ function sendTwilioMessage(picture) {
     }
   });
 }
+
+console.log("Now listening for twitter favorites on account " + nconf.get("twitter-receiver") +
+" from user " + nconf.get("twitter-sender"));
