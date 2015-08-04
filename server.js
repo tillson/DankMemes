@@ -1,7 +1,8 @@
-var Twit = require('twit'),
+var Twit = require("twit"),
 request = require("request"),
 nconf = require("nconf"),
-twilio = require('twilio');
+twilio = require("twilio"),
+colors = require("colors");
 
 nconf.argv()
   .env()
@@ -18,21 +19,19 @@ var client = new Twit({
   access_token_secret: nconf.get("twitter-accessSecret")
 });
 
-var stream = client.stream('user');
+var stream = client.stream("user");
 
-stream.on('user_event', function(event) {
-  console.log("Event!");
+stream.on("user_event", function(event) {
   if (event.event == "favorite") {
-    if (event.source.screen_name == "_ndrewh" && event.target.screen_name == "tillson_") {
+    if (event.source.screen_name == nconf.get("twitter-receiver") && event.target.screen_name == nconf.get("twitter-sender")) {
       sendDankMeme();
     }
   }
 });
 
 function sendDankMeme() {
-  console.log("Sending Andrew a dank meme...");
+  console.log("Sending Andrew a dank meme...".america);
   getDankMeme(function(meme) {
-    console.log(meme);
     sendTwilioMessage(meme);
   });
 }
@@ -62,11 +61,13 @@ function sendTwilioMessage(picture) {
     MediaUrl: picture
   }, function(err, responseData) {
     if (err !== null) {
-      console.log("RED ALERT!  The Twilio message failed!");
+      console.log("RED ALERT!  The Twilio message failed!".bold.red);
       console.log(err);
+    } else {
+      console.log("Sent a dank meme!".zebra); // thank you mr. skeletal
     }
   });
 }
 
-console.log("Now listening for twitter favorites on account " + nconf.get("twitter-receiver") +
-" from user " + nconf.get("twitter-sender"));
+console.log(("Now listening for twitter favorites on account " + nconf.get("twitter-receiver") +
+" from user " + nconf.get("twitter-sender")).green);
